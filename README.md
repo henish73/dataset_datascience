@@ -1,51 +1,56 @@
-# The AI-Labor Paradox (2024–2026) Dashboard & Simulator
+# The AI-Labor Paradox (2024–2026)
 
-## Project Overview
-The "AI-Labor Paradox" is a multifaceted research project exploring the structural shift in technological employment as the market transitions from simple digital augmentation to autonomous agentic workflows. This repository houses a synthetic 5,000-row, 65-column dataset grounded in O*NET and Kaggle market data to simulate complex econometric outcomes of the 2026 labor crisis.
+## Abstract
+The AI-Labor Paradox explores the asymmetric displacement of workers as agentic AI systems transition from task-assistance to autonomous orchestration. Our research identifies a definitive **"K-Shaped" divergence**, where high-level Strategic Orchestrators leverage AI for productivity gains while Middle-Management Coordinators face aggressive automation of their core coordination tasks. Most critically, the dataset reveals a **"Remote Danger Multiplier,"** where remote-eligible roles exhibit a 4x higher risk of displacement due to the inherent digital codifiability of their workflows.
 
-## Key Findings: The "K-Shaped" Displacement
-Our research identifies a profound divergence in labor resilience:
-- **Strategic Orchestrators (Top of the K):** Senior-level roles (> $120k) leveraging AI for strategic multi-step reasoning show a **38.8% displacement rate**, functioning as "governors" of the systems.
-- **Middle-Management Coordinators (Bottom of the K):** Roles primarily serving as information routers or coordination bridges face a **56.8% displacement rate** due to the elimination of the "Coordination Tax."
-- **The Remote Penalty:** Remote-eligible roles exhibit a **4x higher risk** of displacement compared to on-site roles due to the inherent digital codifiability of their tasks.
+---
+
+## Data Dictionary (65-Column Schema)
+The master dataset (`data/processed/ai_labor_paradox_ultimate_gist.csv`) contains 5,000 records grounded in O*NET occupational benchmarks. Key features include:
+
+- **record_id**: Unique identifier for the simulated worker.
+- **soc_code / job_title**: Grounded O*NET Standard Occupational Classification.
+- **theoretical_exposure_pct**: Base automation risk derived from task analysis.
+- **is_remote_eligible**: Boolean flag indicating if the role can be performed off-site.
+- **task_codifiability_score**: Measure of how easily core job functions can be converted to AI logic.
+- **displacement_occurred**: Binary target (1 = Displacement, 0 = Resilient).
+- **resilience_score**: Composite metric of human-centric soft skills and AI-competency.
+- **has_ai_competency**: Flag for workers who have successfully upskilled in Deep Learning/Cloud.
+- **meta_features [0-48]**: Synthetic econometric variables for high-dimensional ML training.
 
 ---
 
 ## Repository Structure
-- `/data/raw/`: Original O*NET and Kaggle datasets.
-- `/data/processed/`: The high-fidelity synthetic Master Dataset.
-- `/notebooks/`: Exploratory Data Analysis (EDA) and visualization cells.
-- `/scripts/`: Python utilities for data synthesis and PDF generation.
-- `/docs/`: Research PDFs, Section 3 Analysis, and EDA results.
-- `/simulator_prototype/`: Full-stack React + FastAPI predictive simulator.
+- **`/data/raw/`**: Grounding datasets (O*NET, Kaggle trends, initial research data).
+- **`/data/processed/`**: Finalized high-fidelity CSVs and masterpiece versions.
+- **`/notebooks/`**: `01_exploratory_data_analysis.ipynb` for visual research findings.
+- **`/scripts/`**: Master generation engine (`generate_synthetic_data.py`).
+- **`/docs/`**: Finalized research reports (/reports) and reference papers (/references).
+- **`/simulator_prototype/`**: Full-stack web dashboard ("2026 Labor Risk Navigator").
 
 ---
 
-## Getting Started
+## Setup & Implementation
 
-### 1. Data Generation
-To regenerate the Master Dataset grounded in the latest O*NET raw CSVs:
+### 1. Environment Configuration
+Install necessary dependencies for the ML and EDA pipelines:
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Dataset Generation
+Run the unified generator to reconstruct the 65-column master dataset using live O*NET grounding:
 ```bash
 python scripts/generate_synthetic_data.py
 ```
 
-### 2. Exploratory Data Analysis
-To view the visual findings and correlations:
+### 3. Exploratory Data Analysis
+Open the primary research notebook to visualize the K-Shaped trajectories:
 ```bash
-# Open the notebook in your preferred environment
-jupyter notebook notebooks/AI_Labor_Paradox_EDA.ipynb
-```
-
-### 3. Running the Simulator
-To launch the 2026 Labor Risk Navigator web environment:
-```powershell
-cd simulator_prototype
-./start_simulator.bat
+jupyter notebook notebooks/01_exploratory_data_analysis.ipynb
 ```
 
 ---
 
-## Requirements
-- Python 3.9+
-- Node.js 18+ (for Simulator Frontend)
-- See `requirements.txt` for specific Python library dependencies.
+## Technical Appendix
+This project utilizes an **XGBoost Classifier** for displacement prediction, achieving high precision in identifying the "Statistical Red Zones" created by the Remote Danger Multiplier.

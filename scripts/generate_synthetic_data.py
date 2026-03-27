@@ -6,19 +6,17 @@ import random
 def generate_dataset(num_rows=5000):
     print(f"Initializing AI-Labor Paradox Dataset Synthesis (Row Target: {num_rows})...")
     
-    # Paths configured for the new production structure
+    # Paths configured for the new flattened production structure
     RAW_DATA_DIR = os.path.join("data", "raw")
-    ONET_DIR = os.path.join(RAW_DATA_DIR, "onet")
-    KAGGLE_DIR = os.path.join(RAW_DATA_DIR, "kaggle")
     
-    # Grounding with O*NET data
+    # Grounding with O*NET data (Directly in data/raw)
     print("Loading O*NET grounding data...")
-    occ_data = pd.read_csv(os.path.join(ONET_DIR, "Occupation Data.csv"))
-    work_activities = pd.read_csv(os.path.join(ONET_DIR, "Work Activities.csv"))
+    occ_data = pd.read_csv(os.path.join(RAW_DATA_DIR, "Occupation Data.csv"))
+    work_activities = pd.read_csv(os.path.join(RAW_DATA_DIR, "Work Activities.csv"))
     
-    # Grounding with Kaggle market data
+    # Grounding with Kaggle market data (Directly in data/raw)
     print("Loading AI Market Trends...")
-    market_data = pd.read_csv(os.path.join(KAGGLE_DIR, "ai_jobs_market_2025_2026.csv"))
+    market_data = pd.read_csv(os.path.join(RAW_DATA_DIR, "ai_jobs_market_2025_2026.csv"))
     
     # Define Sectors and weights (Grounding from Research PDF Table 1)
     sectors = {
