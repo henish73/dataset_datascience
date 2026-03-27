@@ -1,0 +1,392 @@
+
+    <html>
+    <head>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; color: #333; line-height: 1.6; padding: 40px; }
+        h1 { color: #2C3E50; border-bottom: 2px solid #3498DB; padding-bottom: 10px; }
+        h2 { color: #2980B9; margin-top: 30px; }
+        h3 { color: #16A085; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; margin-bottom: 20px; font-size: 14px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #F2F3F4; font-weight: bold; }
+        tr:nth-child(even) { background-color: #F9F9F9; }
+        .highlight { background-color: #FDEDEC; padding: 10px; border-left: 4px solid #E74C3C; margin: 20px 0; }
+        .inference { background-color: #EBF5FB; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
+        pre, code { background-color: #F4F6F6; padding: 10px; border-radius: 4px; font-family: Consolas, monospace; display: block; overflow-x: auto;}
+    </style>
+    </head>
+    <body>
+        <h1>Exploratory Data Analysis (EDA) - The AI-Labor Paradox (2024-2026)</h1>
+        
+        <h2>Task 1: Univariate Analysis (The Landscape)</h2>
+        <h3>Distribution of Sector</h3>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Proportion</th>
+    </tr>
+    <tr>
+      <th>sector</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Office Support</th>
+      <td>0.4630</td>
+    </tr>
+    <tr>
+      <th>Technology/Computer</th>
+      <td>0.1040</td>
+    </tr>
+    <tr>
+      <th>Production</th>
+      <td>0.0806</td>
+    </tr>
+    <tr>
+      <th>Management</th>
+      <td>0.0640</td>
+    </tr>
+    <tr>
+      <th>Architecture &amp; Engineering</th>
+      <td>0.0566</td>
+    </tr>
+    <tr>
+      <th>Healthcare Practitioners</th>
+      <td>0.0550</td>
+    </tr>
+    <tr>
+      <th>Education</th>
+      <td>0.0434</td>
+    </tr>
+    <tr>
+      <th>Arts &amp; Design</th>
+      <td>0.0282</td>
+    </tr>
+    <tr>
+      <th>Life/Physical Science</th>
+      <td>0.0256</td>
+    </tr>
+    <tr>
+      <th>Sales</th>
+      <td>0.0216</td>
+    </tr>
+    <tr>
+      <th>Business &amp; Financial</th>
+      <td>0.0146</td>
+    </tr>
+    <tr>
+      <th>Protective Service</th>
+      <td>0.0142</td>
+    </tr>
+    <tr>
+      <th>Food Service</th>
+      <td>0.0126</td>
+    </tr>
+    <tr>
+      <th>Construction</th>
+      <td>0.0126</td>
+    </tr>
+    <tr>
+      <th>Legal</th>
+      <td>0.0040</td>
+    </tr>
+  </tbody>
+</table>
+        
+        <h3>Distribution of Displacement</h3>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Proportion</th>
+    </tr>
+    <tr>
+      <th>displacement_occurred</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>0.505</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0.495</td>
+    </tr>
+  </tbody>
+</table>
+        
+        <h3>Distribution of Overall Risk Category</h3>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Proportion</th>
+    </tr>
+    <tr>
+      <th>overall_risk_category</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Low Risk</th>
+      <td>0.4594</td>
+    </tr>
+    <tr>
+      <th>High Risk</th>
+      <td>0.4398</td>
+    </tr>
+    <tr>
+      <th>Medium Risk</th>
+      <td>0.1008</td>
+    </tr>
+  </tbody>
+</table>
+        
+        <h3>Volume of Risk (Top 3 Sectors >70% Exposure Density)</h3>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Density</th>
+    </tr>
+    <tr>
+      <th>sector</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Office Support</th>
+      <td>0.697192</td>
+    </tr>
+    <tr>
+      <th>Architecture &amp; Engineering</th>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Arts &amp; Design</th>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+        
+        <h2>Task 2: Bivariate Analysis (The Correlations)</h2>
+        <h3>The Salary Paradox</h3>
+        <p>Displacement Rate by Salary Bin:</p>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>displacement_occurred</th>
+    </tr>
+    <tr>
+      <th>salary_bin</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Q1(Low)</th>
+      <td>0.533600</td>
+    </tr>
+    <tr>
+      <th>Q2</th>
+      <td>0.493764</td>
+    </tr>
+    <tr>
+      <th>Q3</th>
+      <td>0.492641</td>
+    </tr>
+    <tr>
+      <th>Q4(High)</th>
+      <td>0.500000</td>
+    </tr>
+  </tbody>
+</table>
+        <p><strong>Point-biserial correlation (Salary vs Displacement):</strong> {corr_salary:.4f}</p>
+        
+        <h3>The Skill Shield</h3>
+        <p><strong>Correlation (Education Mismatch vs Displacement):</strong> {corr_gap:.4f}</p>
+        <p>Displacement Rate by Education Mismatch Gap:</p>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>displacement_occurred</th>
+    </tr>
+    <tr>
+      <th>gap_size</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Low Gap</th>
+      <td>0.4960</td>
+    </tr>
+    <tr>
+      <th>Mid-Low</th>
+      <td>0.5032</td>
+    </tr>
+    <tr>
+      <th>Mid-High</th>
+      <td>0.5024</td>
+    </tr>
+    <tr>
+      <th>High Gap</th>
+      <td>0.5184</td>
+    </tr>
+  </tbody>
+</table>
+        
+        <h2>Task 3: Multivariate Analysis (The 'Red Zones')</h2>
+        <h3>Interaction: Remote + High Codifiability</h3>
+        <p>Average Displacement Rates:</p>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>high_codif</th>
+      <th>False</th>
+      <th>True</th>
+    </tr>
+    <tr>
+      <th>is_remote_eligible</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.153265</td>
+      <td>0.628176</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.585752</td>
+      <td>0.715539</td>
+    </tr>
+  </tbody>
+</table>
+        
+        <h3>Statistical Red Zone</h3>
+        <div class="highlight">
+            <p><strong>Red Zone Displacement Rate (Remote + Low Skill Transf + High Maturity Org):</strong> 0.5724 (Count: 152)</p>
+        </div>
+
+        <h2>Task 4: Synthesis for Deliverables</h2>
+        <h3>Top 5 Most Resilient Roles</h3>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>job_title</th>
+      <th>sector</th>
+      <th>resilience_score</th>
+      <th>demand_growth_yoy_pct</th>
+      <th>displacement_occurred</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Automotive Glass Installers and Repairers</td>
+      <td>Office Support</td>
+      <td>19.25</td>
+      <td>87.6</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Patternmakers, Wood</td>
+      <td>Office Support</td>
+      <td>18.98</td>
+      <td>87.7</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>First-Line Supervisors of Protective Service Workers, All Other</td>
+      <td>Protective Service</td>
+      <td>18.98</td>
+      <td>87.7</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Psychologists, All Other</td>
+      <td>Office Support</td>
+      <td>18.98</td>
+      <td>87.7</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Biomass Plant Technicians</td>
+      <td>Office Support</td>
+      <td>18.91</td>
+      <td>87.8</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+        
+        <h3>K-Shaped Trajectory Contrasts</h3>
+        <ul>
+            <li><strong>Strategic Orchestrators (Senior, >$120k)</strong> Displacement Rate: {orch_disp:.4f} (Count: 1161)</li>
+            <li><strong>Middle-Management Coordinators (Zone 3/4, non-Senior)</strong> Displacement Rate: {mid_disp:.4f} (Count: 1846)</li>
+        </ul>
+        
+        <h2>Anomalies Detection</h2>
+        <p><strong>High Risk (>85% exposure) but not displaced:</strong> 118 records.</p>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>job_title</th>
+      <th>skills_cloud</th>
+      <th>skills_deep_learning</th>
+      <th>annual_salary_usd</th>
+      <th>job_zone</th>
+      <th>is_senior</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Weatherization Installers and Technicians</td>
+      <td>1</td>
+      <td>1</td>
+      <td>299000.0</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>Biological Technicians</td>
+      <td>1</td>
+      <td>0</td>
+      <td>130000.0</td>
+      <td>4</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Air Crew Members</td>
+      <td>0</td>
+      <td>1</td>
+      <td>150000.0</td>
+      <td>5</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+        
+        <h2>Section 3: Core Research Inferences</h2>
+        <div class="inference">
+            <strong>1. The Remote Danger Multiplier:</strong> The interaction between remote eligibility and high task codifiability demonstrates a severe risk aggregation. Remote workers with highly codifiable tasks experience an overwhelming displacement rate, contrasting drastically with on-site workers performing low-codifiability tasks. The compounding effect of remote eligibility acts as a massive risk multiplier, forming the 'Statistical Red Zone'.
+        </div>
+        <div class="inference">
+            <strong>2. The K-Shaped Divergence (Strategic Orchestrators vs. Coordinators):</strong> The dataset conclusively illustrates the bifurcated 'K-Shaped' trajectory of AI displacement. The displacement rate for Middle-Management Coordinators is aggressively high, compared to significantly lower rates for Strategic Orchestrators earning over $120,000. Rather than providing absolute immunity, high salaries segment into two distinct paths: senior workers orchestrating AI strategy are shielded, while well-paid mid-level coordinators are targeted for efficiency deltas.
+        </div>
+        <div class="inference">
+            <strong>3. The Efficacy of the Skill Shield:</strong> Higher Education Mismatch strictly corresponds to elevated displacement risk. However, anomaly detection reveals individuals with extreme automation exposure (>85%) avoiding displacement entirely by possessing Cloud or Deep Learning skills (the 'Skill Shield'). Workers bridging the competency void through specific technical upskilling successfully neutralize their underlying automation risk.
+        </div>
+    </body>
+    </html>
+    

@@ -1,0 +1,767 @@
+{
+  "ai_labor_paradox_data_OLDEST.csv": [
+    "emp_id",
+    "sector",
+    "theoretical_exposure_pct",
+    "augmentation_potential_pct",
+    "realized_coverage_idx",
+    "is_remote_eligible",
+    "skill_transferability_score",
+    "org_ai_maturity_stage",
+    "task_codifiability_score",
+    "education_mismatch_idx",
+    "displacement_occurred"
+  ],
+  "ai_labor_paradox_masterpiece.csv": [
+    "emp_id",
+    "sector",
+    "soc_code",
+    "theoretical_exposure_pct",
+    "augmentation_potential_pct",
+    "realized_coverage_idx",
+    "is_remote_eligible",
+    "skill_transferability_score",
+    "org_ai_maturity_stage",
+    "task_codifiability_score",
+    "education_mismatch_idx",
+    "displacement_occurred"
+  ],
+  "ai_labor_paradox_ultimate_masterpiece.csv": [
+    "emp_id",
+    "sector",
+    "job_title",
+    "soc_code",
+    "annual_salary_usd",
+    "ai_salary_premium_pct",
+    "demand_growth_yoy_pct",
+    "is_remote_eligible",
+    "is_llm_role",
+    "task_codifiability_score",
+    "education_mismatch_idx",
+    "resilience_score",
+    "displacement_occurred"
+  ],
+  "CODE\\ai_jobs_market_2025_2026.csv": [
+    "job_id",
+    "job_title",
+    "job_category",
+    "experience_level",
+    "years_of_experience",
+    "education_required",
+    "annual_salary_usd",
+    "salary_min_usd",
+    "salary_max_usd",
+    "city",
+    "country",
+    "remote_work",
+    "company_size",
+    "industry",
+    "required_skills",
+    "ai_salary_premium_pct",
+    "demand_score",
+    "demand_growth_yoy_pct",
+    "benefits_score_10",
+    "posting_year",
+    "posting_month",
+    "is_senior",
+    "is_remote_friendly",
+    "is_llm_role",
+    "salary_tier"
+  ],
+  "CODE\\AI_Job_Market_Trends_2026.csv": [
+    "job_id",
+    "job_title",
+    "company_size",
+    "company_industry",
+    "country",
+    "remote_type",
+    "experience_level",
+    "years_experience",
+    "education_level",
+    "skills_python",
+    "skills_sql",
+    "skills_ml",
+    "skills_deep_learning",
+    "skills_cloud",
+    "salary",
+    "job_posting_month",
+    "job_posting_year",
+    "hiring_urgency",
+    "job_openings"
+  ],
+  "CODE\\ai_job_trends_dataset.csv": [
+    "Job Title",
+    "Industry",
+    "Job Status",
+    "AI Impact Level",
+    "Median Salary (USD)",
+    "Required Education",
+    "Experience Required (Years)",
+    "Job Openings (2024)",
+    "Projected Openings (2030)",
+    "Remote Work Ratio (%)",
+    "Automation Risk (%)",
+    "Location",
+    "Gender Diversity (%)"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\labor_market_impacts\\job_exposure.csv": [
+    "occ_code",
+    "title",
+    "observed_exposure"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\labor_market_impacts\\task_penetration.csv": [
+    "task",
+    "penetration"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_02_10\\automation_vs_augmentation.csv": [
+    "interaction_type",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_02_10\\bls_employment_may_2023.csv": [
+    "SOC or O*NET-SOC 2019 Title",
+    "bls_distribution"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_02_10\\onet_task_mappings.csv": [
+    "task_name",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_02_10\\onet_task_statements.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Task ID",
+    "Task",
+    "Task Type",
+    "Incumbents Responding",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_02_10\\SOC_Structure.csv": [
+    "Major Group",
+    "Minor Group",
+    "Broad Occupation",
+    "Detailed Occupation",
+    "Detailed O*NET-SOC",
+    "SOC or O*NET-SOC 2019 Title"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_02_10\\wage_data.csv": [
+    "SOCcode",
+    "JobName",
+    "JobFamily",
+    "isBright",
+    "isGreen",
+    "JobZone",
+    "MedianSalary",
+    "JobForecast",
+    "ChanceAuto",
+    "WageGroup"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_03_27\\automation_vs_augmentation_by_task.csv": [
+    "task_name",
+    "feedback_loop",
+    "directive",
+    "task_iteration",
+    "validation",
+    "learning",
+    "filtered"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_03_27\\automation_vs_augmentation_v1.csv": [
+    "interaction_type",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_03_27\\automation_vs_augmentation_v2.csv": [
+    "interaction_type",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_03_27\\onet_task_statements.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Task ID",
+    "Task",
+    "Task Type",
+    "Incumbents Responding",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_03_27\\SOC_Structure.csv": [
+    "Major Group",
+    "Minor Group",
+    "Broad Occupation",
+    "Detailed Occupation",
+    "Detailed O*NET-SOC",
+    "SOC or O*NET-SOC 2019 Title"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_03_27\\task_pct_v1.csv": [
+    "task_name",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_03_27\\task_pct_v2.csv": [
+    "task_name",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_03_27\\task_thinking_fractions.csv": [
+    "task_name",
+    "thinking_fraction"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\input\\automation_vs_augmentation_v1.csv": [
+    "interaction_type",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\input\\automation_vs_augmentation_v2.csv": [
+    "interaction_type",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\input\\bea_us_state_gdp_2024.csv": [
+    "SASUMMARY State annual summary statistics: personal income, GDP, consumer spending, price indexes, and employment"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\input\\Population by single age _20250903072924.csv": [
+    "\ufeffTable Name\uff1aCustom_SinglePopulation"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\input\\sc-est2024-agesex-civ.csv": [
+    "SUMLEV",
+    "REGION",
+    "DIVISION",
+    "STATE",
+    "NAME",
+    "SEX",
+    "AGE",
+    "ESTBASE2020_CIV",
+    "POPEST2020_CIV",
+    "POPEST2021_CIV",
+    "POPEST2022_CIV",
+    "POPEST2023_CIV",
+    "POPEST2024_CIV"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\input\\soc_structure_raw.csv": [
+    "Major Group",
+    "Minor Group",
+    "Broad Occupation",
+    "Detailed Occupation",
+    "Detailed O*NET-SOC",
+    "SOC or O*NET-SOC 2019 Title"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\input\\task_pct_v1.csv": [
+    "task_name",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\input\\task_pct_v2.csv": [
+    "task_name",
+    "pct"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\input\\working_age_pop_2024_country_raw.csv": [
+    "countryiso3code",
+    "date",
+    "value",
+    "unit",
+    "obs_status",
+    "decimal",
+    "indicator.id",
+    "indicator.value",
+    "country.id",
+    "country.value"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\intermediate\\aei_raw_1p_api_2025-08-04_to_2025-08-11.csv": [
+    "geo_id",
+    "geography",
+    "date_start",
+    "date_end",
+    "platform_and_product",
+    "facet",
+    "level",
+    "variable",
+    "cluster_name",
+    "value"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\intermediate\\aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv": [
+    "geo_id",
+    "geography",
+    "date_start",
+    "date_end",
+    "platform_and_product",
+    "facet",
+    "level",
+    "variable",
+    "cluster_name",
+    "value"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\intermediate\\gdp_2024_country.csv": [
+    "iso_alpha_3",
+    "gdp_total",
+    "year"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\intermediate\\gdp_2024_us_state.csv": [
+    "state_code",
+    "state_name",
+    "gdp_total",
+    "gdp_millions",
+    "year"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\intermediate\\iso_country_codes.csv": [
+    "iso_alpha_2",
+    "iso_alpha_3",
+    "country_name"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\intermediate\\onet_task_statements.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Task ID",
+    "Task",
+    "Task Type",
+    "Incumbents Responding",
+    "Date",
+    "Domain Source",
+    "soc_major_group"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\intermediate\\soc_structure.csv": [
+    "Major Group",
+    "Minor Group",
+    "Broad Occupation",
+    "Detailed Occupation",
+    "Detailed O*NET-SOC",
+    "SOC or O*NET-SOC 2019 Title",
+    "soc_major_group"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\intermediate\\working_age_pop_2024_country.csv": [
+    "iso_alpha_3",
+    "year",
+    "working_age_pop",
+    "country_code",
+    "country_name"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\intermediate\\working_age_pop_2024_us_state.csv": [
+    "state",
+    "working_age_pop",
+    "state_code"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2025_09_15\\data\\output\\aei_enriched_claude_ai_2025-08-04_to_2025-08-11.csv": [
+    "geo_id",
+    "geography",
+    "date_start",
+    "date_end",
+    "platform_and_product",
+    "facet",
+    "level",
+    "variable",
+    "cluster_name",
+    "value",
+    "geo_name"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2026_01_15\\data\\intermediate\\aei_raw_1p_api_2025-11-13_to_2025-11-20.csv": [
+    "geo_id",
+    "geography",
+    "date_start",
+    "date_end",
+    "platform_and_product",
+    "facet",
+    "level",
+    "variable",
+    "cluster_name",
+    "value"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2026_01_15\\data\\intermediate\\aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv": [
+    "geo_id",
+    "geography",
+    "date_start",
+    "date_end",
+    "platform_and_product",
+    "facet",
+    "level",
+    "variable",
+    "cluster_name",
+    "value"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2026_03_24\\data\\aei_raw_1p_api_2026-02-05_to_2026-02-12.csv": [
+    "geo_id",
+    "geography",
+    "date_start",
+    "date_end",
+    "platform_and_product",
+    "facet",
+    "level",
+    "variable",
+    "cluster_name",
+    "value"
+  ],
+  "CODE\\ANTROPHIC DATABASE\\release_2026_03_24\\data\\aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv": [
+    "geo_id",
+    "geography",
+    "date_start",
+    "date_end",
+    "platform_and_product",
+    "facet",
+    "level",
+    "variable",
+    "cluster_name",
+    "value"
+  ],
+  "CODE\\O .NET DATABASE\\Abilities to Work Activities.csv": [
+    "Abilities Element ID",
+    "Abilities Element Name",
+    "Work Activities Element ID",
+    "Work Activities Element Name"
+  ],
+  "CODE\\O .NET DATABASE\\Abilities to Work Context.csv": [
+    "Abilities Element ID",
+    "Abilities Element Name",
+    "Work Context Element ID",
+    "Work Context Element Name"
+  ],
+  "CODE\\O .NET DATABASE\\Abilities.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Data Value",
+    "N",
+    "Standard Error",
+    "Lower CI Bound",
+    "Upper CI Bound",
+    "Recommend Suppress",
+    "Not Relevant",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Alternate Titles.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Alternate Title",
+    "Short Title",
+    "Source(s)"
+  ],
+  "CODE\\O .NET DATABASE\\Basic Interests to RIASEC.csv": [
+    "Basic Interests Element ID",
+    "Basic Interests Element Name",
+    "RIASEC Element ID",
+    "RIASEC Element Name"
+  ],
+  "CODE\\O .NET DATABASE\\Content Model Reference.csv": [
+    "Element ID",
+    "Element Name",
+    "Description"
+  ],
+  "CODE\\O .NET DATABASE\\DWA Reference.csv": [
+    "Element ID",
+    "Element Name",
+    "IWA ID",
+    "IWA Title",
+    "DWA ID",
+    "DWA Title"
+  ],
+  "CODE\\O .NET DATABASE\\Education, Training, and Experience Categories.csv": [
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Category",
+    "Category Description"
+  ],
+  "CODE\\O .NET DATABASE\\Education, Training, and Experience.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Category",
+    "Data Value",
+    "N",
+    "Standard Error",
+    "Lower CI Bound",
+    "Upper CI Bound",
+    "Recommend Suppress",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Emerging Tasks.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Task",
+    "Category",
+    "Original Task ID",
+    "Original Task",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Interests Illustrative Activities.csv": [
+    "Element ID",
+    "Element Name",
+    "Interest Type",
+    "Activity"
+  ],
+  "CODE\\O .NET DATABASE\\Interests Illustrative Occupations.csv": [
+    "Element ID",
+    "Element Name",
+    "Interest Type",
+    "O*NET-SOC Code",
+    "Title"
+  ],
+  "CODE\\O .NET DATABASE\\Interests.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Data Value",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\IWA Reference.csv": [
+    "Element ID",
+    "Element Name",
+    "IWA ID",
+    "IWA Title"
+  ],
+  "CODE\\O .NET DATABASE\\Job Zone Reference.csv": [
+    "Job Zone",
+    "Name",
+    "Experience",
+    "Education",
+    "Job Training",
+    "Examples",
+    "SVP Range"
+  ],
+  "CODE\\O .NET DATABASE\\Job Zones.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Job Zone",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Knowledge.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Data Value",
+    "N",
+    "Standard Error",
+    "Lower CI Bound",
+    "Upper CI Bound",
+    "Recommend Suppress",
+    "Not Relevant",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Level Scale Anchors.csv": [
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Anchor Value",
+    "Anchor Description"
+  ],
+  "CODE\\O .NET DATABASE\\Occupation Data.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Description"
+  ],
+  "CODE\\O .NET DATABASE\\Occupation Level Metadata.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Item",
+    "Response",
+    "N",
+    "Percent",
+    "Date"
+  ],
+  "CODE\\O .NET DATABASE\\Related Occupations.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Related O*NET-SOC Code",
+    "Related Title",
+    "Relatedness Tier",
+    "Index"
+  ],
+  "CODE\\O .NET DATABASE\\RIASEC Keywords.csv": [
+    "Element ID",
+    "Element Name",
+    "Keyword",
+    "Keyword Type"
+  ],
+  "CODE\\O .NET DATABASE\\Sample of Reported Titles.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Reported Job Title",
+    "Shown in My Next Move"
+  ],
+  "CODE\\O .NET DATABASE\\Scales Reference.csv": [
+    "Scale ID",
+    "Scale Name",
+    "Minimum",
+    "Maximum"
+  ],
+  "CODE\\O .NET DATABASE\\Skills to Work Activities.csv": [
+    "Skills Element ID",
+    "Skills Element Name",
+    "Work Activities Element ID",
+    "Work Activities Element Name"
+  ],
+  "CODE\\O .NET DATABASE\\Skills to Work Context.csv": [
+    "Skills Element ID",
+    "Skills Element Name",
+    "Work Context Element ID",
+    "Work Context Element Name"
+  ],
+  "CODE\\O .NET DATABASE\\Skills.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Data Value",
+    "N",
+    "Standard Error",
+    "Lower CI Bound",
+    "Upper CI Bound",
+    "Recommend Suppress",
+    "Not Relevant",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Survey Booklet Locations.csv": [
+    "Element ID",
+    "Element Name",
+    "Survey Item Number",
+    "Scale ID",
+    "Scale Name"
+  ],
+  "CODE\\O .NET DATABASE\\Task Categories.csv": [
+    "Scale ID",
+    "Scale Name",
+    "Category",
+    "Category Description"
+  ],
+  "CODE\\O .NET DATABASE\\Task Ratings.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Task ID",
+    "Task",
+    "Scale ID",
+    "Scale Name",
+    "Category",
+    "Data Value",
+    "N",
+    "Standard Error",
+    "Lower CI Bound",
+    "Upper CI Bound",
+    "Recommend Suppress",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Task Statements.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Task ID",
+    "Task",
+    "Task Type",
+    "Incumbents Responding",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Tasks to DWAs.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Task ID",
+    "Task",
+    "DWA ID",
+    "DWA Title",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Technology Skills.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Example",
+    "Commodity Code",
+    "Commodity Title",
+    "Hot Technology",
+    "In Demand"
+  ],
+  "CODE\\O .NET DATABASE\\Tools Used.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Example",
+    "Commodity Code",
+    "Commodity Title"
+  ],
+  "CODE\\O .NET DATABASE\\UNSPSC Reference.csv": [
+    "Commodity Code",
+    "Commodity Title",
+    "Class Code",
+    "Class Title",
+    "Family Code",
+    "Family Title",
+    "Segment Code",
+    "Segment Title"
+  ],
+  "CODE\\O .NET DATABASE\\Work Activities.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Data Value",
+    "N",
+    "Standard Error",
+    "Lower CI Bound",
+    "Upper CI Bound",
+    "Recommend Suppress",
+    "Not Relevant",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Work Context Categories.csv": [
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Category",
+    "Category Description"
+  ],
+  "CODE\\O .NET DATABASE\\Work Context.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Category",
+    "Data Value",
+    "N",
+    "Standard Error",
+    "Lower CI Bound",
+    "Upper CI Bound",
+    "Recommend Suppress",
+    "Not Relevant",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Work Styles.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Data Value",
+    "Date",
+    "Domain Source"
+  ],
+  "CODE\\O .NET DATABASE\\Work Values.csv": [
+    "O*NET-SOC Code",
+    "Title",
+    "Element ID",
+    "Element Name",
+    "Scale ID",
+    "Scale Name",
+    "Data Value",
+    "Date",
+    "Domain Source"
+  ]
+}
