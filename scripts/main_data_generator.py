@@ -6,11 +6,14 @@ import random
 def generate_dataset(num_rows=5000):
     print(f"Initializing AI-Labor Paradox Dataset Synthesis (Row Target: {num_rows})...")
     
-    # Paths configured for the new flattened production structure
-    RAW_DATA_DIR = os.path.join("data", "raw")
+    # Robust pathing relative to script location
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE_DIR = os.path.join(SCRIPT_DIR, "..")
+    RAW_DATA_DIR = os.path.join(BASE_DIR, "data", "raw")
+    PROCESSED_DATA_DIR = os.path.join(BASE_DIR, "data", "processed")
     
     # Grounding with O*NET data (Directly in data/raw)
-    print("Loading O*NET grounding data...")
+    print(f"Loading O*NET grounding data from: {RAW_DATA_DIR}")
     occ_data = pd.read_csv(os.path.join(RAW_DATA_DIR, "Occupation Data.csv"))
     work_activities = pd.read_csv(os.path.join(RAW_DATA_DIR, "Work Activities.csv"))
     
@@ -101,7 +104,7 @@ def generate_dataset(num_rows=5000):
 
     df = pd.DataFrame(data)
     
-    output_path = os.path.join("data", "processed", "ai_labor_paradox_ultimate_gist.csv")
+    output_path = os.path.join(PROCESSED_DATA_DIR, "ai_labor_paradox_ultimate_gist.csv")
     df.to_csv(output_path, index=False)
     print(f"\nSUCCESS: Synthized 5,000 records across 65 columns grounded in O*NET.")
     print(f"Output saved to: {output_path}")
