@@ -35,11 +35,11 @@ The repository is organized following a strict **Lifecycle-Linked Taxonomy**:
 
 ## 🧠 Core Engineering Architecture
 
-### **1. Ensemble Predictive Suite (Backend)**
-The simulator moves beyond single-point probability by using a **Consensus Ensemble**:
-- **Consensus Rating**: Averaged probabilities from **XGBoost**, **Random Forest**, and **MLP Neural Networks**.
-- **Explainable AI (SHAP)**: Real-time "Reasoning Summaries" identifying the primary feature drivers for every individual risk prediction.
-- **Model Variance**: Confidence metrics derived from model divergence.
+### **1. Consensus Predictive Suite (Backend/Production)**
+The simulator moves beyond single-point probability to a production-ready **Weighted Consensus Ensemble**:
+- **Dynamic Weighting**: The `/predict` engine calculates probabilities using weighted averages derived from cross-validation precision (`XGBoost: ~41%`, `Random Forest: ~29%`, `MLP: ~29%`).
+- **Explainable AI (SHAP)**: Granular, real-time "Reasoning Summaries" identifying the top 5 raw feature drivers pushing the risk percentage up or down for every prediction.
+- **Production Reliability**: Ensemble weights and SHAP explainers are saved as serialized artifacts during training for lighting-fast API inference.
 
 ### **2. The Command Center (Frontend)**
 A futuristic, dark-mode dashboard providing multi-dimensional insights:

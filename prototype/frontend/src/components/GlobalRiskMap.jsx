@@ -1,18 +1,50 @@
-import React from "react"
+import React, { useEffect, useState, useMemo } from "react"
+import * as d3 from "d3-geo"
+import { feature } from "topojson-client"
 
-// Simulated Grid Map for the "Command Center"
+// TopoJSON source (Very small, ~50KB)
+const geoUrl = "https://unpkg.com/world-atlas@2.0.2/countries-110m.json";
+
 const GlobalRiskMap = () => {
-  // Mock Risk Centers
-  const hotspots = [
-    { name: "North America", x: 150, y: 100, risk: 78, status: "Critical" },
-    { name: "Western Europe", x: 380, y: 90, risk: 72, status: "High" },
-    { name: "East Asia", x: 650, y: 110, risk: 84, status: "Hyper-Risk" },
-    { name: "Southeast Asia", x: 620, y: 220, risk: 65, status: "Vulnerable" },
-    { name: "Oceania", x: 700, y: 300, risk: 45, status: "Stable" },
-  ];
+  const [geographies, setGeographies] = useState([]);
+  const [hotspots, setHotspots] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Map dimensions
+  const width = 800;
+  const height = 320;
+
+  // Projection setup
+  const projection = useMemo(() => {
+    return d3.geoMercator()
+      .scale(100)
+      .translate([width / 2, height / 2 + 40]);
+  }, [width, height]);
+
+  const pathGenerator = d3.geoPath().projection(projection);
+
+  useEffect(() => {
+    // Fetch Map Data and Risk Data concurrently
+    Promise.all([
+      fetch(geoUrl).then(res => res.json()),
+      fetch('http://localhost:8000/global-risk').then(res => res.json())
+    ])
+    .then(([geoData, riskData]) => {
+      const countries = feature(geoData, geoData.objects.countries).features;
+      setGeographies(countries);
+      if (riskData && riskData.hotspots) {
+        setHotspots(riskData.hotspots);
+      }
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error("Error loading map or risk data:", err);
+      setLoading(false);
+    });
+  }, []);
 
   return (
-    <div className="bg-slate-900/50 p-6 rounded-3xl border border-white/10 h-[450px] overflow-hidden relative group">
+    <div className="bg-slate-900/50 p-6 rounded-3xl border border-white/10 h-[450px] overflow-hidden relative group font-sans">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h3 className="text-sm font-bold text-slate-300 uppercase tracking-widest">Global Displacement Matrix</h3>
@@ -23,60 +55,78 @@ const GlobalRiskMap = () => {
         </div>
       </div>
 
-      <div className="relative h-[320px] w-full flex items-center justify-center bg-black/40 rounded-2xl border border-white/5 overflow-hidden">
-        {/* Cyber Grid Background */}
-        <svg width="100%" height="100%" className="opacity-30">
-          <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" strokeWidth="0.5" />
-          </pattern>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-          
-          {/* Abstract World Outlines (Dots) */}
-          {Array.from({ length: 40 }).map((_, i) => (
-            Array.from({ length: 20 }).map((_, j) => {
-              // Simple logic to "draw" landmasses roughly
-              const isLand = (i > 5 && i < 12 && j > 3 && j < 10) || // Americas
-                             (i > 18 && i < 25 && j > 2 && j < 8) || // Europe/Africa
-                             (i > 28 && i < 38 && j > 4 && j < 12);  // Asia
-              if (!isLand) return null;
-              return (
-                <circle 
-                  key={`${i}-${j}`} 
-                  cx={i * 20 + 10} cy={j * 20 + 10} r="1.5" 
-                  fill="#334155" 
-                />
-              )
-            })
-          ))}
+      <div className="relative h-[320px] w-full bg-black/40 rounded-2xl border border-white/5 overflow-hidden">
+        {/* Cyber Grid Overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-10">
+          <svg width="100%" height="100%">
+            <pattern id="grid-pattern" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#1e293b" strokeWidth="0.5" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+          </svg>
+        </div>
 
-          {/* Connectors */}
-          <line x1="150" y1="100" x2="380" y2="90" stroke="#00f3ff" strokeWidth="0.5" strokeDasharray="4 4" className="animate-pulse" />
-          <line x1="380" y1="90" x2="650" y2="110" stroke="#00f3ff" strokeWidth="0.5" strokeDasharray="4 4" className="animate-pulse" />
-        </svg>
-
-        {/* Hotspots */}
-        {hotspots.map((spot) => (
-          <div 
-            key={spot.name}
-            className="absolute flex flex-col items-center group/spot cursor-help"
-            style={{ left: spot.x, top: spot.y }}
-          >
-            <div className={`w-4 h-4 rounded-full border-2 border-white shadow-xl ${spot.risk > 75 ? 'bg-red-500 shadow-red-500/50' : 'bg-cyan-500 shadow-cyan-500/50'} animate-ping opacity-75 absolute`}></div>
-            <div className={`w-4 h-4 rounded-full border-2 border-white relative ${spot.risk > 75 ? 'bg-red-500' : 'bg-cyan-500'}`}></div>
-            
-            {/* Tooltip */}
-            <div className="absolute top-full mt-2 bg-slate-950 border border-white/10 p-3 rounded-xl opacity-0 group-hover/spot:opacity-100 transition-opacity z-20 pointer-events-none w-48 shadow-2xl">
-              <div className="text-[10px] font-bold text-slate-500 uppercase mb-1">{spot.name}</div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-black text-white">{spot.status}</span>
-                <span className="text-xs font-mono text-cyan-400">{spot.risk}%</span>
-              </div>
-              <div className="w-full bg-slate-800 h-1 rounded-full mt-2">
-                <div className="h-full bg-cyan-500 rounded-full" style={{ width: `${spot.risk}%` }}></div>
-              </div>
-            </div>
+        {loading ? (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-cyan-500/20 border-t-cyan-500 rounded-full animate-spin"></div>
           </div>
-        ))}
+        ) : (
+          <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full">
+            <g>
+              {geographies.map((geo, index) => (
+                <path
+                  key={`path-${index}`}
+                  d={pathGenerator(geo)}
+                  fill="#0f172a"
+                  stroke="#1e293b"
+                  strokeWidth="0.5"
+                  className="transition-colors duration-300 hover:fill-[#1e293b] cursor-default"
+                />
+              ))}
+            </g>
+
+            {hotspots.map((spot) => {
+              const [x, y] = projection(spot.coordinates);
+              return (
+                <g key={spot.name} className="group/marker cursor-help">
+                  {/* Ping effect */}
+                  <circle
+                    cx={x} cy={y}
+                    r={6}
+                    fill={spot.risk > 75 ? "#ef4444" : "#06b6d4"}
+                    className="animate-ping opacity-40"
+                  />
+                  {/* Main dot */}
+                  <circle
+                    cx={x} cy={y}
+                    r={4}
+                    fill={spot.risk > 75 ? "#ef4444" : "#06b6d4"}
+                    stroke="#ffffff"
+                    strokeWidth={1.5}
+                    className="shadow-xl"
+                  />
+                  
+                  {/* Tooltip implementation using foreignObject for HTML/Tailwind support */}
+                  <foreignObject x={x + 10} y={y - 40} width="160" height="80" className="overflow-visible opacity-0 group-hover/marker:opacity-100 transition-opacity pointer-events-none">
+                    <div className="bg-slate-950/90 border border-white/10 p-2 rounded-lg shadow-2xl backdrop-blur-sm">
+                      <div className="text-[9px] font-bold text-slate-500 uppercase mb-0.5">{spot.name}</div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[10px] font-black text-white">{spot.status}</span>
+                        <span className="text-[10px] font-mono text-cyan-400">{spot.risk}%</span>
+                      </div>
+                      <div className="w-full bg-slate-800 h-1 rounded-full mt-1.5 overflow-hidden">
+                        <div 
+                          className={`h-full ${spot.risk > 75 ? "bg-red-500" : "bg-cyan-500"}`} 
+                          style={{ width: `${spot.risk}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </foreignObject>
+                </g>
+              );
+            })}
+          </svg>
+        )}
       </div>
 
       <div className="mt-6 flex justify-between items-end">

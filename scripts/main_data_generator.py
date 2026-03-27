@@ -75,7 +75,13 @@ def generate_dataset(num_rows=5000):
         # Feature Engineering: Resilience Score
         resilience_score = (1 - task_codifiability) * (2 if has_ai_skills else 1) * 10
         
-        # Compile into 65-column schema (subset of important features demonstrated here)
+        # Grounding skills based on has_ai_skills
+        # If they have AI skills, they likely have Python + one advanced skill
+        skills_python = 1 if has_ai_skills or random.random() < 0.3 else 0
+        skills_cloud = 1 if (has_ai_skills and random.random() < 0.6) else (1 if random.random() < 0.1 else 0)
+        skills_deep_learning = 1 if (has_ai_skills and random.random() < 0.4) else (1 if random.random() < 0.05 else 0)
+
+        # Compile into 65-column schema
         record = {
             "record_id": f"AI-LAB-{i:05d}",
             "soc_code": soc_code,
@@ -88,17 +94,20 @@ def generate_dataset(num_rows=5000):
             "displacement_occurred": displacement_occurred,
             "resilience_score": round(resilience_score, 2),
             "has_ai_competency": 1 if has_ai_skills else 0,
-            "is_senior": 1 if i % 10 == 0 else 0, # K-Shaped Logic: Seniority proxy
-            "chance_of_automation_onet": random.uniform(0, 100),
-            "education_mismatch_idx": random.uniform(0, 1),
-            "skill_transferability_score": random.uniform(0, 1),
+            "is_senior": 1 if i % 10 == 0 else 0,
+            "skills_python": skills_python,
+            "skills_cloud": skills_cloud,
+            "skills_deep_learning": skills_deep_learning,
+            "chance_of_automation_onet": round(random.uniform(0, 100), 2),
+            "education_mismatch_idx": round(random.uniform(0, 1), 2),
+            "skill_transferability_score": round(random.uniform(0, 1), 2),
             "org_ai_maturity_stage": random.randint(1, 5),
             "displacement_stage": "Critical" if displacement_occurred and risk_score > 0.7 else ("Transition" if displacement_occurred else "None")
         }
         
         # Padding to 65 columns to match existing research schema requirement
         for j in range(len(record), 65):
-            record[f"meta_feature_{j}"] = random.normalvariate(0.5, 0.1)
+            record[f"meta_feature_{j}"] = round(random.normalvariate(0.5, 0.1), 3)
             
         data.append(record)
 

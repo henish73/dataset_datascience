@@ -10,10 +10,14 @@ import {
 import SkillRadarChart from './components/RadarChart';
 import RiskScatterPlot from './components/RiskScatterPlot';
 import GlobalRiskMap from './components/GlobalRiskMap';
+import ResilienceRoadmap from './components/ResilienceRoadmap';
+import LaborFlowSankey from './components/LaborFlowSankey';
 
 function App() {
   const [activeTab, setActiveTab ] = useState('navigator');
   const [formData, setFormData] = useState({
+    soc_code: '15-1250.00',
+    current_skills: 'Python, Git, Project Management',
     theoretical_exposure_pct: 60,
     annual_salary_usd: 120000,
     education_mismatch_idx: 0.3,
@@ -23,45 +27,52 @@ function App() {
     task_codifiability_score: 0.6,
     skill_transferability_score: 0.5,
     org_ai_maturity_stage: 3,
-    chance_of_automation_onet: 50
+    chance_of_automation_onet: 50,
+    skills_python: 1,
+    skills_cloud: 0,
+    skills_deep_learning: 0
   });
 
   const [result, setResult] = useState(null);
+  const [gapData, setGapData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Research Findings (Distilled from StatCan/WEF/O*NET analysis)
-  const researchFindings = [
-    { id: 1, source: "WEF 2025", topic: "The K-Shape", detail: "High-income roles leverage AI for 40% productivity gains while middle-management faces 56% task automation." },
-    { id: 2, source: "StatCan 2026", topic: "Remote Penalty", detail: "Remote-eligible roles exhibit a 74.9% displacement rate due to digital task codifiability." },
-    { id: 3, source: "O*NET Analysis", topic: "Skill Shielding", detail: "Proficiency in 'Complex Problem Solving' and 'AI Orchestration' reduces displacement risk by 30%." },
-    { id: 4, source: "WEF 2025", topic: "Coordination Tax", detail: "AI systems are specifically targeting the 'Efficiency Delta' in middle-management coordination workflows." },
-  ];
-
-  const filteredFindings = researchFindings.filter(f => 
-    f.topic.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    f.detail.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? (checked ? 1 : 0) : parseFloat(value)
+      [name]: type === 'checkbox' ? (checked ? 1 : 0) : (type === 'range' || name === 'annual_salary_usd' ? parseFloat(value) : value)
     }));
   };
 
   const handleCalculate = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8000/predict', formData);
+      // 1. Prediction API
+      const response = await axios.post('http://localhost:8000/predict', {
+          ...formData,
+          skills_python: formData.current_skills.toLowerCase().includes('python') ? 1 : 0,
+          skills_cloud: (formData.current_skills.toLowerCase().includes('cloud') || formData.current_skills.toLowerCase().includes('aws')) ? 1 : 0,
+          skills_deep_learning: formData.current_skills.toLowerCase().includes('deep learning') ? 1 : 0
+      });
       setResult(response.data);
+
+      // 2. Gap Analysis API
+      const gapResponse = await axios.post('http://localhost:8000/analyze-gap', {
+          soc_code: formData.soc_code,
+          current_skills: formData.current_skills.split(',').map(s => s.trim())
+      });
+      setGapData(gapResponse.data);
+
     } catch (error) {
-      console.error("Prediction Error: ", error);
-      alert("Error connecting to the Prediction Simulator Backend. Ensure the FastAPI server is running on Port 8000.");
+      console.error("API Error: ", error);
+      alert("Error connecting to the simulator backend.");
     }
     setLoading(false);
   };
+  
+  // ... rest of the file ...
 
   const getRiskStyles = (zone) => {
     if (zone === "Red Zone") return { color: "text-[#ff003c]", border: "border-[#ff003c]", shadow: "shadow-neon-red", bg: "bg-[#ff003c]/10" };
@@ -102,6 +113,59 @@ function App() {
             {activeTab === btn.id && <motion.div layoutId="nav-active" className="absolute left-0 top-0 bottom-0 w-1 bg-cyan-400 rounded-full" />}
           </button>
         ))}
+
+        {/* Persona Dropdown/Quick Select */}
+        <div className="mt-auto w-full flex flex-col gap-4 items-center mb-8">
+          <div className="w-full h-px bg-white/10 mb-2"></div>
+          <span className="text-[8px] text-slate-500 uppercase tracking-widest font-bold text-center block w-full px-2">Archetypes</span>
+          
+          {[
+            { 
+              id: 'admin', label: 'T1: Remote Admin', icon: Activity,
+              data: {
+                soc_code: '43-9061.00', current_skills: 'Data Entry, Office, Customer Service',
+                theoretical_exposure_pct: 85, annual_salary_usd: 45000, education_mismatch_idx: 0.1,
+                is_remote_eligible: 1, is_senior: 0, resilience_score: 8, task_codifiability_score: 0.85,
+                skill_transferability_score: 0.3, org_ai_maturity_stage: 2, chance_of_automation_onet: 75,
+                skills_python: 0, skills_cloud: 0, skills_deep_learning: 0
+              }
+            },
+            { 
+              id: 'hybrid', label: 'T2: Hybrid Orchestrator', icon: ShieldCheck,
+              data: {
+                soc_code: '15-1250.00', current_skills: 'Python, AWS, Agile Management',
+                theoretical_exposure_pct: 40, annual_salary_usd: 135000, education_mismatch_idx: 0.4,
+                is_remote_eligible: 1, is_senior: 1, resilience_score: 16, task_codifiability_score: 0.3,
+                skill_transferability_score: 0.8, org_ai_maturity_stage: 4, chance_of_automation_onet: 25,
+                skills_python: 1, skills_cloud: 1, skills_deep_learning: 0
+              }
+            },
+            { 
+              id: 'legacy', label: 'T3: Legacy Manager', icon: ShieldAlert,
+              data: {
+                soc_code: '11-3010.00', current_skills: 'Budgeting, Strategy, Personnel',
+                theoretical_exposure_pct: 65, annual_salary_usd: 95000, education_mismatch_idx: 0.7,
+                is_remote_eligible: 0, is_senior: 1, resilience_score: 12, task_codifiability_score: 0.6,
+                skill_transferability_score: 0.5, org_ai_maturity_stage: 1, chance_of_automation_onet: 55,
+                skills_python: 0, skills_cloud: 0, skills_deep_learning: 0
+              }
+            }
+          ].map((persona) => (
+            <button 
+              key={persona.id}
+              onClick={() => {
+                setFormData(persona.data);
+                setTimeout(() => handleCalculate(), 50);
+              }}
+              className="p-3 w-[80%] mx-auto bg-slate-900 border border-white/5 rounded-xl text-slate-400 hover:text-cyan-400 hover:border-cyan-500/30 transition-all group relative flex justify-center"
+            >
+              <persona.icon size={18} />
+              <span className="absolute left-full ml-4 px-2 py-1 bg-slate-800 text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap uppercase tracking-widest border border-white/10 z-50">
+                {persona.label}
+              </span>
+            </button>
+          ))}
+        </div>
       </nav>
 
       {/* Main Content Area */}
@@ -140,11 +204,42 @@ function App() {
                 </h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                  {/* Skill Gap Specifics */}
+                  <div className="col-span-2 grid grid-cols-2 gap-8 p-6 bg-white/5 rounded-2xl border border-white/5 shadow-inner">
+                    <div className="group">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">
+                          SOC Occupation Code [Standard Industry ID]
+                        </label>
+                        <select 
+                            name="soc_code" value={formData.soc_code} onChange={handleChange}
+                            className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-xs font-mono outline-none focus:border-cyan-500/50 appearance-none cursor-pointer"
+                        >
+                          <option value="15-1250.00">15-1250.00 (Software & Digital Development)</option>
+                          <option value="43-9061.00">43-9061.00 (Admin & Office Support)</option>
+                          <option value="11-3010.00">11-3010.00 (Administrative Services Management)</option>
+                          <option value="13-1111.00">13-1111.00 (Management & Strategy Analysis)</option>
+                          <option value="25-1000.00">25-1000.00 (Education & Academic Research)</option>
+                          <option value="15-1211.00">15-1211.00 (Computer Systems Architects)</option>
+                        </select>
+                    </div>
+                    <div className="group">
+                        <label className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">
+                          Current Skill Stack [Comma Separated List]
+                        </label>
+                        <input 
+                            type="text" name="current_skills" value={formData.current_skills} onChange={handleChange}
+                            placeholder="e.g. Python, AWS, Management"
+                            className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-xs font-mono outline-none focus:border-cyan-500/50"
+                        />
+                    </div>
+                  </div>
+
                   {[
-                    { label: 'Exposure (%)', name: 'theoretical_exposure_pct', min: 0, max: 100, step: 1, suffix: '%' },
-                    { label: 'Salary (USD)', name: 'annual_salary_usd', min: 30000, max: 250000, step: 5000, pre: '$' },
-                    { label: 'Skill Gap', name: 'education_mismatch_idx', min: 0, max: 1, step: 0.05 },
-                    { label: 'Resilience', name: 'resilience_score', min: 0, max: 20, step: 0.5 },
+                    { label: 'Expose (%) [Task Vulnerability]', name: 'theoretical_exposure_pct', min: 0, max: 100, step: 1, suffix: '%' },
+                    { label: 'Salary (USD) [Annual Compensation]', name: 'annual_salary_usd', min: 30000, max: 250000, step: 5000, pre: '$' },
+                    { label: 'Market Dissonance [Skill Gap Index]', name: 'education_mismatch_idx', min: 0, max: 1, step: 0.05 },
+                    { label: 'Resilience Index [Soft Skill Adaptability]', name: 'resilience_score', min: 0, max: 20, step: 0.5 },
+                    { label: 'Automation Chance [ONET Benchmark]', name: 'chance_of_automation_onet', min: 0, max: 100, step: 1, suffix: '%' },
                   ].map((input) => (
                     <div key={input.name} className="group">
                       <label className="flex justify-between text-[10px] font-bold text-slate-500 mb-3 uppercase tracking-widest group-hover:text-slate-300 transition-colors">
@@ -160,6 +255,22 @@ function App() {
                       />
                     </div>
                   ))}
+
+                  <div className="col-span-2 group">
+                      <label className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-3 block">
+                        Org AI Maturity [Company Adoption Stage]
+                      </label>
+                      <select 
+                          name="org_ai_maturity_stage" value={formData.org_ai_maturity_stage} onChange={handleChange}
+                          className="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-xs font-mono outline-none focus:border-cyan-500/50 appearance-none cursor-pointer"
+                      >
+                        <option value="1">Stage 1: Initial (Individual/No AI usage)</option>
+                        <option value="2">Stage 2: Experimental (Early pilots & testing)</option>
+                        <option value="3">Stage 3: Operational (Scaling internal systems)</option>
+                        <option value="4">Stage 4: Transformative (AI-driven core products)</option>
+                        <option value="5">Stage 5: Autonomous (Full AI-native architecture)</option>
+                      </select>
+                  </div>
                 </div>
 
                 <div className="flex gap-12 pt-8 border-t border-white/5">
@@ -169,7 +280,7 @@ function App() {
                         <div className="w-10 h-5 bg-slate-800 rounded-full peer peer-checked:bg-purple-500 transition-colors border border-white/5"></div>
                         <div className="absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-all peer-checked:translate-x-5"></div>
                       </div>
-                      <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 group-hover:text-slate-200">Remote eligible</span>
+                      <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 group-hover:text-slate-200">Remote eligible [Digital Native]</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer group">
                       <div className="relative">
@@ -177,7 +288,7 @@ function App() {
                         <div className="w-10 h-5 bg-slate-800 rounded-full peer peer-checked:bg-cyan-500 transition-colors border border-white/5"></div>
                         <div className="absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition-all peer-checked:translate-x-5"></div>
                       </div>
-                      <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 group-hover:text-slate-200">Senior Orchestrator</span>
+                      <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 group-hover:text-slate-200">Senior [Strategic Orchestrator]</span>
                     </label>
                 </div>
 
@@ -207,12 +318,63 @@ function App() {
                         <div className={`text-sm font-black uppercase text-white tracking-widest`}>{result.resilience_category}</div>
                       </div>
 
-                      <div className="mt-8 p-4 bg-black/40 rounded-xl border border-white/5 w-full text-left">
-                        <div className="flex items-center gap-2 mb-2">
-                           <Info size={12} className="text-cyan-400" />
-                           <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">SHAP Reasoning</span>
+                      {/* Explicit SHAP Variables */}
+                      <div className="mt-8 w-full text-left">
+                        <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-2">
+                           <div className="flex items-center gap-2">
+                             <Info size={14} className="text-cyan-400" />
+                             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Attribution Metrics (SHAP)</span>
+                           </div>
                         </div>
-                        <p className="text-xs text-slate-300 italic">"{result.reasoning_summary}"</p>
+                        <p className="text-xs text-slate-300 italic mb-4">"{result.reasoning_summary}"</p>
+                        
+                        <div className="space-y-2">
+                          {result.top_5_shap && result.top_5_shap.map((shap, idx) => (
+                            <div key={idx} className="flex justify-between items-center text-[10px] font-mono bg-black/40 p-2 rounded border border-white/5">
+                              <span className="text-slate-400 uppercase tracking-wider">{shap.feature.replace(/_/g, ' ')}</span>
+                              <span className={shap.contribution > 0 ? 'text-red-400' : 'text-green-400'}>
+                                {shap.contribution > 0 ? '+' : ''}{shap.contribution.toFixed(3)}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* What-If Sandbox */}
+                      <div className="mt-8 w-full text-left bg-slate-950 p-6 rounded-2xl border border-white/5">
+                        <div className="flex items-center gap-2 mb-4">
+                           <Activity size={14} className="text-purple-400" />
+                           <span className="text-[10px] font-bold text-purple-400 uppercase tracking-widest">What-If Sandbox</span>
+                        </div>
+                        <p className="text-[10px] text-slate-500 mb-4 leading-relaxed">Toggle theoretical competency acquisition to recalculate consensus risk.</p>
+                        <div className="flex gap-2 flex-wrap">
+                          {['Python', 'Cloud', 'Deep Learning'].map(skill => (
+                            <button 
+                              key={skill}
+                              onClick={() => {
+                                // Simple toggle logic: Append or remove from existing string, then recalculate
+                                const current = formData.current_skills;
+                                let updated = current;
+                                if (!current.toLowerCase().includes(skill.toLowerCase())) {
+                                  updated = current ? `${current}, ${skill}` : skill;
+                                } else {
+                                  updated = current.replace(new RegExp(`,?\\s*${skill}`, 'gi'), '').trim();
+                                  if (updated.startsWith(',')) updated = updated.substring(1).trim();
+                                }
+                                setFormData(prev => ({ ...prev, current_skills: updated }));
+                                // Small timeout to allow state to update before calculating
+                                setTimeout(() => handleCalculate(), 50);
+                              }}
+                              className={`px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest transition-all ${
+                                formData.current_skills.toLowerCase().includes(skill.toLowerCase())
+                                ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50'
+                                : 'bg-white/5 text-slate-500 border border-white/10 hover:border-white/30 hover:text-slate-300'
+                              }`}
+                            >
+                              {formData.current_skills.toLowerCase().includes(skill.toLowerCase()) ? `✓ ${skill}` : `+ ${skill}`}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </>
                   ) : (
@@ -229,22 +391,16 @@ function App() {
           {activeTab === 'intelligence' && (
             <motion.div 
               key="intelligence" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-10"
             >
               <div className="col-span-1">
-                <SkillRadarChart userData={formData} />
+                <SkillRadarChart gapData={gapData} />
               </div>
               <div className="col-span-1">
-                <RiskScatterPlot />
+                <ResilienceRoadmap gapData={gapData} />
               </div>
-              <div className="col-span-2 p-6 bg-slate-900/40 rounded-3xl border border-white/5">
-                <div className="flex items-center gap-4 mb-4">
-                  <Info className="text-purple-400" />
-                  <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-slate-300">The K-Shape Hypothesis</h3>
-                </div>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  Our multi-model ensemble confirms the emergence of a dual-track labor market. High-level **Strategic Orchestrators** (Green Zone) utilize agentic AI to amplify their cognitive reach, while **Middle-Management Coordinators** (Yellow/Red Zone) face structural displacement as AI absorbs routine oversight and scheduling logic.
-                </p>
+             <div className="col-span-2">
+                <LaborFlowSankey gapData={gapData} />
               </div>
             </motion.div>
           )}
