@@ -16,18 +16,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load the model globally at startup
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "xgboost_model.joblib")
-model = None
+# Load the ensemble models globally at startup
+MODEL_DIR = os.path.dirname(__file__)
+model_xgb = None
+model_rf = None
+model_mlp = None
+explainer = None
 
 @app.on_event("startup")
-def load_model():
-    global model
-    if os.path.exists(MODEL_PATH):
-        model = joblib.load(MODEL_PATH)
-        print("Model loaded successfully.")
-    else:
-        print(f"Warning: Model not found at {MODEL_PATH}")
+def load_models():
+    global model_xgb, model_rf, model_mlp, explainer
+    try:
+        model_xgb = joblib.load(os.path.join(MODEL_DIR, "xgb_model.joblib"))
+        model_rf = joblib.load(os.path.join(MODEL_DIR, "rf_model.joblib"))
+        model_mlp = joblib.load(os.path.join(MODEL_DIR, "mlp_model.joblib"))
+        explainer = joblib.load(os.path.join(MODEL_DIR, "shap_explainer.joblib"))
+        print(" Ensemble models and SHAP explainer loaded successfully.")
+    except Exception as e:
+        print(f"Warning: Error loading models: {e}")
 
 class PredictRequest(BaseModel):
     theoretical_exposure_pct: float
@@ -43,8 +49,8 @@ class PredictRequest(BaseModel):
 
 @app.post("/predict")
 def predict_displacement(req: PredictRequest):
-    if not model:
-        return {"error": "Model not loaded"}
+    if not all([model_xgb, model_rf, model_mlp]):
+        return {"error": "Ensemble models not fully loaded"}
 
     # Construct dataframe using the exact same feature order
     features_df = pd.DataFrame([{
@@ -60,11 +66,29 @@ def predict_displacement(req: PredictRequest):
         'is_senior': req.is_senior
     }])
 
-    # Predict probability of class 1 (displacement occurs)
-    probability = float(model.predict_proba(features_df)[0][1])
+    # 1. Consensus Prediction (Average Probabilities)
+    p1 = float(model_xgb.predict_proba(features_df)[0][1])
+    p2 = float(model_rf.predict_proba(features_df)[0][1])
+    p3 = float(model_mlp.predict_proba(features_df)[0][1])
     
-    # Calculate Risk percentage (0-100)
-    risk_pct = probability * 100
+    avg_probability = (p1 + p2 + p3) / 3
+    risk_pct = avg_probability * 100
+
+    # 2. SHAP Reasoning Summary
+    reasoning = "Resilient infrastructure detected."
+    try:
+        shap_values = explainer(features_df)
+        # Get index of top feature contributing to risk
+        top_feature_idx = abs(shap_values.values[0]).argmax()
+        top_feature_name = features_df.columns[top_feature_idx]
+        contribution = shap_values.values[0][top_feature_idx]
+        
+        if contribution > 0:
+            reasoning = f"Risk elevation primarily driven by high {top_feature_name.replace('_', ' ')}."
+        else:
+            reasoning = f"Risk mitigated by strong {top_feature_name.replace('_', ' ')} counters."
+    except Exception as e:
+        print(f"SHAP Error: {e}")
 
     # Business Logic for visual feedback
     if risk_pct > 70:
@@ -83,7 +107,9 @@ def predict_displacement(req: PredictRequest):
     return {
         "displacement_probability_pct": round(risk_pct, 1),
         "resilience_category": category,
-        "zone": zone
+        "zone": zone,
+        "reasoning_summary": reasoning,
+        "model_variance": round(abs(p1-p2), 3) # Confidence metric
     }
 
 @app.get("/health")

@@ -12,3 +12,4 @@ scipy==1.15.1
 ipykernel==6.29.5
 nbformat==5.10.4
 nbconvert==7.16.4
+shap==0.44.1
